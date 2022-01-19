@@ -5,6 +5,12 @@ A simple Command Line Editor written uding Java.
 New Ideas and Improvements are most welcomed :)
 
 ## Steps to run
+### Linux:
+```bash
+$ .\build.sh
+$ .\editor.sh <file name>
+```
+### Windows:
 ```bash
 $ .\build.bat
 $ .\editor.bat <file name>
