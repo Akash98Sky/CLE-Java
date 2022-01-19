@@ -1,7 +1,28 @@
 package src.models;
 
+import java.util.Map;
+
 public class Action {
-    private Cursor cursor;
+    public static final String[] CMD_LIST = {
+            "Row: R y",
+            "Col: C x",
+            "Insert: I \"text\"",
+            "Delete: D",
+            "Undo: UD",
+            "Redo: RD",
+            "Save: S",
+            "Exit: E" };
+
+    private static final Map<String, ActionType> cmdMap = Map.of(
+            "C", ActionType.CURSOR_COL,
+            "R", ActionType.CURSOR_ROW,
+            "I", ActionType.INSERT,
+            "D", ActionType.DELETE,
+            "UD", ActionType.UNDO,
+            "RD", ActionType.REDO,
+            "S", ActionType.SAVE,
+            "E", ActionType.EXIT);
+
     private ActionType type;
     private String data;
 
@@ -14,14 +35,6 @@ public class Action {
         this.data = data;
     }
 
-    public void setCurrentCursor(Cursor cursor) {
-        this.cursor = cursor;
-    }
-
-    public Cursor getCursor() {
-        return cursor;
-    }
-
     public ActionType getType() {
         return type;
     }
@@ -30,16 +43,24 @@ public class Action {
         return data;
     }
 
-    public boolean applyOnPage(Page page) {
-        switch (type) {
-            case INSERT:
-                page.getLineBuilder(cursor.getRow()).insert(cursor.getCol() - 1, data);
-                return true;
-            case DELETE:
-                page.getLineBuilder(cursor.getRow()).delete(cursor.getCol() - 1, cursor.getCol());
-                return true;
-            default:
-                return false;
+    public int getDataAsInt() {
+        return Integer.parseInt(data);
+    }
+
+    public static Action fromCmd(String cmd, String args) {
+        if (args != null) {
+            args = args.trim();
+            int s, e;
+            if ((s = args.indexOf("\"")) != -1 && (e = args.lastIndexOf("\"")) != -1) {
+                args = args.substring(s + 1, e);
+            }
         }
+
+        if (cmdMap.get(cmd.toUpperCase()) == null) {
+            System.out.println("Invalid action");
+            return null;
+        }
+
+        return new Action(cmdMap.get(cmd.toUpperCase()), args);
     }
 }

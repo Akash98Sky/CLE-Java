@@ -5,8 +5,8 @@ public class Snapshot {
     private Cursor cursor;
 
     public Snapshot(Page page, Cursor cursor) {
-        this.page = page;
-        this.cursor = cursor;
+        this.page = Page.clone(page);
+        this.cursor = Cursor.clone(cursor);
     }
 
     public Page getPage() {

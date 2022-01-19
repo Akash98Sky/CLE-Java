@@ -5,7 +5,6 @@ import java.io.InputStreamReader;
 import java.util.function.Function;
 
 import src.models.Action;
-import src.models.ActionType;
 
 public class ActionBuilder implements Runnable {
     private Function<Action, Void> actionCallback;
@@ -33,21 +32,7 @@ public class ActionBuilder implements Runnable {
         String cmd = input.substring(0, spIdx == -1 ? input.length() : spIdx);
         String data = spIdx == -1 ? null : input.substring(spIdx + 1);
 
-        switch (cmd) {
-            case "C":
-                return new Action(ActionType.CURSOR, data);
-            case "I":
-                return new Action(ActionType.INSERT, data);
-            case "D":
-                return new Action(ActionType.DELETE);
-            case "S":
-                return new Action(ActionType.SAVE);
-            case "E":
-                return new Action(ActionType.EXIT);
-            default:
-                System.out.println("Invalid action");
-                return null;
-        }
+        return Action.fromCmd(cmd, data);
     }
 
     @Override
@@ -68,7 +53,7 @@ public class ActionBuilder implements Runnable {
 
             input.close();
         } catch (Exception e) {
-            System.out.println("IOException: " + e);
+            e.printStackTrace();
         }
     }
 }

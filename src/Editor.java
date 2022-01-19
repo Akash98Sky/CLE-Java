@@ -13,20 +13,22 @@ public class Editor {
     private boolean render;
 
     public Editor() {
-        this.actionBuilder = new ActionBuilder(a -> { return applyAction(a); });
+        this.actionBuilder = new ActionBuilder(a -> {
+            return applyAction(a);
+        });
         this.render = false;
     }
 
     private Void applyAction(Action action) {
-        if(action.getType() == ActionType.SAVE) {
+        if (action.getType() == ActionType.SAVE) {
             this.saveFile();
-        } else if(action.getType() == ActionType.EXIT) {
+        } else if (action.getType() == ActionType.EXIT) {
             this.closeEditor();
         } else {
             this.pageEdit.applyAction(action);
         }
-        
-        if(this.render) {
+
+        if (this.render) {
             renderEditView();
         }
 
@@ -38,7 +40,7 @@ public class Editor {
         System.out.println(fileRW.getFileName() + " : ");
         System.out.println(pageEdit.editView(10));
 
-        System.out.println("Cursor: C x y | Insert: I \"text\" | Delete: D | Save: S | Exit: E");
+        System.out.println(String.join(" | ", Action.CMD_LIST));
     }
 
     public void startRender() {

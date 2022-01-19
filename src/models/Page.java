@@ -16,16 +16,35 @@ public class Page {
         this.lines = new ArrayList<StringBuilder>();
     }
 
+    public static Page clone(Page page) {
+        return new Page(page.getText());
+    }
+
     public void appendLine(String line) {
         this.lines.add(new StringBuilder(line));
     }
 
+    public void insertLine(int line, String text) {
+        if (text == null)
+            text = "";
+        while (lines.size() < line - 1) {
+            lines.add(new StringBuilder());
+        }
+
+        lines.add(line - 1, new StringBuilder(text));
+    }
+
+    public void deleteLine(int line) {
+        if (line <= getLinesCount())
+            this.lines.remove(line - 1);
+    }
+
     public String getLine(int line) {
-        return lines.get(line - 1).toString();
+        return line <= getLinesCount() ? lines.get(line - 1).toString() : "";
     }
 
     public StringBuilder getLineBuilder(int line) {
-        return lines.get(line - 1);
+        return line <= getLinesCount() ? lines.get(line - 1) : null;
     }
 
     public String getText() {
@@ -38,11 +57,11 @@ public class Page {
         return text.toString();
     }
 
-    public int getLineCount() {
+    public int getLinesCount() {
         return lines.size();
     }
 
     public int getLineLength(int line) {
-        return lines.get(line - 1).length();
+        return line <= getLinesCount() ? lines.get(line - 1).length() : 0;
     }
 }

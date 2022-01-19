@@ -1,7 +1,8 @@
 package src.models;
 
 public enum ActionType {
-    CURSOR,
+    CURSOR_ROW,
+    CURSOR_COL,
     INSERT,
     DELETE,
     UNDO,
